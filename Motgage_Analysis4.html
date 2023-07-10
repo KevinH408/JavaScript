@@ -1,0 +1,195 @@
+	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+	
+	
+	<html>
+	
+	<head>
+	<style>
+	
+	body 	{
+	background-color: #98FB98
+	}
+	</style>
+	
+	<title>Mortgage Analysis Title</title>
+	</head>
+	
+	<body>
+	
+
+	<header>
+		<h1>Mortgage Analysis</h1>
+	</header>
+	
+	<script type="text/javascript">
+	
+		function ValidLoan() {
+		var Loan
+		Loan = parseFloat(document.getElementById('Loan').value);
+		if (Loan <=0 || isNaN(Number(document.getElementById('Loan').value))) {
+			alert("Please enter a valid loan amount.");
+			document.getElementById('Loan').value = "";
+			
+			}
+		}
+				
+		function ValidInterest() {
+		var Interest
+		Interest = parseFloat(document.getElementById('Interest').value);
+		if (Interest <=0 || isNaN(Number(document.getElementById('Interest').value))) {
+			alert("Please enter a valid interest amount.");
+			document.getElementById('Interest').value = "";
+			
+			}
+		}
+		
+		
+		function ValidYears() {
+		var Years
+		Years = parseFloat(document.getElementById('Years').value);
+		if (Years <=0 || isNaN(Number(document.getElementById('Years').value))) {
+			alert("Please enter a valid number of years amount.");
+			document.getElementById('Years').value = "";
+			
+			}
+		}
+	
+		function myFunction() {
+		var Loan
+		var Interest
+		var Years
+		
+		Loan = parseFloat(document.getElementById('Loan').value);
+		Interest = parseFloat(document.getElementById('Interest').value);
+		Years = parseFloat(document.getElementById('Years').value);
+		
+		
+		document.getElementById("result").value = Loan + Interest + Years;
+			
+				}
+		
+		function calculate(){
+		
+		var Months
+		var i
+
+		
+		var Loan = parseFloat(document.getElementById('Loan').value);
+		var Interest = parseFloat(document.getElementById('Interest').value);
+		var Years = parseFloat(document.getElementById('Years').value);
+		var current_balance = parseFloat(document.getElementById("current_balance").value);
+		var cumulative_interest = parseFloat(document.getElementById("cumulative_interest").value);
+		var towards_interest = parseFloat(document.getElementById("towards_interest").value);
+		var towards_balance = parseFloat(document.getElementById("towards_balance").value);
+		var cumulative_balance = parseFloat(document.getElementById("cumulative_balance").value);
+		i=Interest/100;
+		Months = Years*12;
+				
+		document.getElementById("payment_amount").value = (Loan*(i/12)*Math.pow((1+i/12), Months)) / (Math.pow((1+i/12), Months) -1);
+		
+		//var payment_amount = (Loan*(i/12)*Math.pow((1+i/12), Months)) / (Math.pow((1+i/12), Months) -1);
+		document.getElementById("cumulative_payment").value = document.getElementById("payment_amount").value*Months;
+		//cumulative_payment = payment_amount.value*Months;
+		document.getElementById("current_balance").value = Loan;
+		document.getElementById("towards_interest").value = (i/12)*document.getElementById("current_balance").value;
+		document.getElementById("towards_balance").value = document.getElementById("payment_amount").value - document.getElementById("towards_interest").value;
+		var x = 1;
+		//var total_interest = 0;
+						
+		//document.getElementById("cumulative_interest").value = parseFloat(document.getElementById("towards_interest").value) + parseFloat(document.getElementById("towards_balance").value);
+		
+		
+		document.getElementById("cumulative_interest").value = 0;
+		document.getElementById("cumulative_balance").value = 0;
+		while(document.getElementById("current_balance").value > 0){
+		
+		document.getElementById("towards_interest").value = (i/12)*parseFloat(document.getElementById("current_balance").value);
+		//towards_balance = payment_amount - towards_interest;
+		document.getElementById("towards_balance").value = parseFloat(document.getElementById("payment_amount").value) - parseFloat(document.getElementById("towards_interest").value);
+		//current_balance = document.getElementById("current_balance").value - document.getElementById("towards_balance").value - document.getElementById("towards_interest").value;
+		//document.getElementById("current_balance").value = parseFloat(document.getElementById("current_balance").value) - parseFloat(document.getElementById("towards_balance").value) - parseFloat(document.getElementById("towards_interest").value);
+		document.getElementById("current_balance").value = parseFloat(document.getElementById("current_balance").value) - parseFloat(document.getElementById("payment_amount").value) + parseFloat(document.getElementById("towards_interest").value);
+		//cumulative_interest = document.getElementById("cumulative_interest").value + document.getElementById("towards_interest").value;
+		//cumulative_interest = cumulative_interest + towards_interest;
+		document.getElementById("cumulative_interest").value = parseFloat(document.getElementById("towards_interest").value) + parseFloat(document.getElementById("cumulative_interest").value);
+		document.getElementById("cumulative_balance").value = parseFloat(document.getElementById("towards_balance").value) + parseFloat(document.getElementById("cumulative_balance").value);
+		x++;
+				
+				document.getElementById("cumulative_interest").value = (Math.round(document.getElementById("cumulative_interest").value*100))/100;
+				document.getElementById("cumulative_balance").value = (Math.round(document.getElementById("cumulative_balance").value*100))/100;
+				document.getElementById("cumulative_payment").value = (Math.round(document.getElementById("cumulative_payment").value*100))/100;
+				
+		}
+		
+					
+		}
+		
+		
+				
+		</script>
+		
+		
+		
+		<table>
+		
+						<tr>
+					<td>Loan</td>
+					<td><input type="text" id="Loan" onchange='ValidLoan()';></td>
+				</tr>
+				<tr>
+					<td>Interest</td>
+					<td><input type="text" id="Interest" onchange='ValidInterest()';></td>
+					<td>%</td>
+				</tr>
+				<tr>
+					<td>Years</td>
+					<td><input type="text" id="Years" onchange='ValidYears()';></td>
+				</tr>
+								
+		</table>
+		<table>
+		<input type="button" value="Calculate Values" onclick="calculate()"/>
+				<tr>
+					<td>Payment Amount</td>
+					<td><input type="text" id="payment_amount" onchange="calculate()"></td>
+				</tr>
+					
+				<tr>
+				<td>Cumulative Payments</td>
+				<td><input type="text" id="cumulative_payment" onchange="calculate()"></td>
+				<tr>
+				
+				
+				<tr>
+				<td>Current Balance</td>
+				<td><input type="text" id="current_balance" onchange="calculate()"></td>
+				<tr>
+				
+				
+				<tr>
+				<td>Towards Interest</td>
+				<td><input type="text" id="towards_interest" onchange="calculate()"></td>
+				<tr>
+				
+				<tr>
+				<td>Towards Balance</td>
+				<td><input type="text" id="towards_balance" onchange="calculate()"></td>
+				<tr>
+				
+				<tr>
+				<td>Cumulative Interest</td>
+				<td><input type="text" id="cumulative_interest" onchange="calculate()"></td>
+				<tr>
+				
+								<tr>
+				<td>Cumulative Balance</td>
+				<td><input type="text" id="cumulative_balance" onchange="calculate()"></td>
+				<tr>
+				
+		</table>
+		
+		Created by Kevin Hansman, July 2016
+
+	</body>
+	
+	</html>
